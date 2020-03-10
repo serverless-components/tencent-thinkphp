@@ -10,36 +10,24 @@ function handlerStatic($path)
 {
     $filename = __DIR__ . "/public/" . $path;
     $handle   = fopen($filename, "r");
-
-    $contents = '';
-    if(filesize($filename) > 0) {
-        $contents = fread($handle, filesize($filename));
-    }
-
+    $contents = fread($handle, filesize($filename));
     fclose($handle);
 
-    $headers = [];
-
-    switch(pathinfo($filename, PATHINFO_EXTENSION)) {
-        case 'css':
-            $headers['Content-Type'] = 'text/css';
-            break;
-        case 'svg':
-            $headers['Content-Type'] = 'image/svg+xml';
-            break;
-        default:
-            $headers['Content-Type'] = mime_content_type($filename);
-            break;
-    }
-
-    if (substr($headers['Content-Type'], 0, 4) === 'text') {
-        $base64Encode = false;
-        $body = $contents;
-    } else {
+    $base64Encode = false;
+    $headers = [
+        'Content-Type'  => '',
+        'Cache-Control' => "max-age=8640000",
+        'Accept-Ranges' => 'bytes',
+    ];
+    $body = $contents;
+    if (preg_match(BINARY_REG, $path)) {
         $base64Encode = true;
+        $headers = [
+            'Content-Type'  => '',
+            'Cache-Control' => "max-age=86400",
+        ];
         $body = base64_encode($contents);
     }
-
     return [
         "isBase64Encoded" => $base64Encode,
         "statusCode" => 200,
