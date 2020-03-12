@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/serverless-components/tencent-thinkphp/compare/v0.1.1...v0.1.2) (2020-03-12)
+
+
+### Bug Fixes
+
+* apigw namespace ([e588dea](https://github.com/serverless-components/tencent-thinkphp/commit/e588dea98d84cc526d99f97b05928b1c1ecdcf0e))
+
 ### [0.1.1](https://github.com/serverless-components/tencent-thinkphp/compare/v0.1.0...v0.1.1) (2020-03-10)
 
 
