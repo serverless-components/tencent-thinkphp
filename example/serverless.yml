@@ -1,6 +1,5 @@
 MyThinkPHP:
-  # component: '@serverless/tencent-thinkphp'
-  component: ../
+  component: '@serverless/tencent-thinkphp'
   inputs:
     region: ap-guangzhou
     functionName: thinkphp-function
