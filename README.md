@@ -25,7 +25,7 @@
 
 在使用此组件之前，你需要先自己初始化一个 `ThinkPHP` 项目
 
-```shell
+```bash
 $ composer create-project topthink/think serverless-thinkphp
 ```
 
@@ -35,7 +35,7 @@ $ composer create-project topthink/think serverless-thinkphp
 
 通过 npm 全局安装 [serverless cli](https://github.com/serverless/serverless)
 
-```shell
+```bash
 $ npm install -g serverless
 ```
 
@@ -43,7 +43,7 @@ $ npm install -g serverless
 
 在项目根目录，创建 `serverless.yml` 文件，在其中进行如下配置
 
-```shell
+```bash
 $ touch serverless.yml
 ```
 
@@ -81,7 +81,7 @@ MyThinkPHP:
 
 通过 `sls` 命令进行部署，并可以添加 `--debug` 参数查看部署过程中的信息
 
-```shell
+```bash
 $ sls --debug
 
   DEBUG ─ Resolving the template's static variables.
@@ -93,27 +93,37 @@ $ sls --debug
   DEBUG ─ Executing the template's components graph.
   DEBUG ─ Compressing function thinkphp-function file to /Users/yugasun/Desktop/Develop/serverless/tencent-thinkphp/example/.serverless/thinkphp-function.zip.
   DEBUG ─ Compressed function thinkphp-function file successful
-  DEBUG ─ Uploading service package to cos[sls-cloudfunction-ap-guangzhou-code]. sls-cloudfunction-default-thinkphp-function-1583729311.zip
+  DEBUG ─ Uploading service package to cos[sls-cloudfunction-ap-guangzhou-code]. sls-cloudfunction-default-thinkphp-function-1584413066.zip
   DEBUG ─ Uploaded package successful /Users/yugasun/Desktop/Develop/serverless/tencent-thinkphp/example/.serverless/thinkphp-function.zip
   DEBUG ─ Creating function thinkphp-function
-
   DEBUG ─ Created function thinkphp-function successful
   DEBUG ─ Setting tags for function thinkphp-function
   DEBUG ─ Creating trigger for function thinkphp-function
   DEBUG ─ Deployed function thinkphp-function successful
-  DEBUG ─ Starting API-Gateway deployment with name MyThinkPHP.TencentApiGateway in the ap-guangzhou region
-  DEBUG ─ Service with ID service-jgey4hi8 created.
-  DEBUG ─ API with id api-jeilvfr6 created.
-  DEBUG ─ Deploying service with id service-jgey4hi8.
-  DEBUG ─ Deployment successful for the api named MyThinkPHP.TencentApiGateway in the ap-guangzhou region.
+  DEBUG ─ Starting API-Gateway deployment with name ap-guangzhou-apigateway in the ap-guangzhou region
+  DEBUG ─ Service with ID service-qndauhr4 created.
+  DEBUG ─ API with id api-6krpwfpo created.
+  DEBUG ─ Deploying service with id service-qndauhr4.
+  DEBUG ─ Deployment successful for the api named ap-guangzhou-apigateway in the ap-guangzhou region.
 
   MyThinkPHP:
-    region:              ap-guangzhou
     functionName:        thinkphp-function
-    apiGatewayServiceId: service-jgey4hi8
-    url:                 https://service-jgey4hi8-1251556596.gz.apigw.tencentcs.com/release/
+    functionOutputs:
+      ap-guangzhou:
+        Name:        thinkphp-function
+        Runtime:     Php7
+        Handler:     serverless-handler.handler
+        MemorySize:  128
+        Timeout:     10
+        Region:      ap-guangzhou
+        Namespace:   default
+        Description: This is a template function
+    region:              ap-guangzhou
+    apiGatewayServiceId: service-qndauhr4
+    url:                 https://service-qndauhr4-1251556596.gz.apigw.tencentcs.com/release/
+    cns:                 (empty array)
 
-  22s › MyThinkPHP › done
+  18s › MyThinkPHP › done
 ```
 
 > 注意: `sls` 是 `serverless` 命令的简写。
@@ -122,15 +132,13 @@ $ sls --debug
 
 通过以下命令移除部署的 API 网关
 
-```shell
+```bash
 $ sls remove --debug
 
   DEBUG ─ Flushing template state and removing all components.
-  DEBUG ─ Removing function
-  DEBUG ─ Request id
   DEBUG ─ Removed function thinkphp-function successful
-  DEBUG ─ Removing any previously deployed API. api-jeilvfr6
-  DEBUG ─ Removing any previously deployed service. service-jgey4hi8
+  DEBUG ─ Removing any previously deployed API. api-6krpwfpo
+  DEBUG ─ Removing any previously deployed service. service-qndauhr4
 
   8s › MyThinkPHP › done
 ```

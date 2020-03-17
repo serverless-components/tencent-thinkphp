@@ -46,10 +46,8 @@
     }
   },
   "dependencies": {
-    "@serverless/core": "^1.1.1",
-    "@serverless/tencent-apigateway": "^2.1.4",
-    "@serverless/tencent-scf": "^3.0.0",
-    "ext": "^1.4.0",
+    "@serverless/core": "^1.1.2",
+    "@serverless/tencent-framework": "^0.0.4",
     "type": "^2.0.0"
   },
   "devDependencies": {

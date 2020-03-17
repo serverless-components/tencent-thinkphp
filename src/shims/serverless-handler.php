@@ -42,7 +42,6 @@ function handler($event, $context)
 
     // init path
     $path = '/' == $event->path ? '' : ltrim($event->path, '/');
-    echo "+++++++".$path;
 
     $filename = __DIR__ . "/public/" . $path;
     if (file_exists($filename) && (preg_match(TEXT_REG, $path) || preg_match(BINARY_REG, $path))) {
