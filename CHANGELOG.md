@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/serverless-components/tencent-thinkphp/compare/v0.1.2...v1.0.0) (2020-03-17)
+
+
+### Features
+
+* refactor using framework ([fe29252](https://github.com/serverless-components/tencent-thinkphp/commit/fe2925250279337a4a5669755becedb36e7b8c40))
+
 ### [0.1.2](https://github.com/serverless-components/tencent-thinkphp/compare/v0.1.1...v0.1.2) (2020-03-12)
 
 
