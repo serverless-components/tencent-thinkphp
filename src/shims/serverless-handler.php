@@ -1,7 +1,7 @@
 <?php
 
 define('TEXT_REG', '#\.html.*|\.js.*|\.css.*|\.html.*#');
-define('BINARY_REG', '#\.gif.*|\.jpg.*|\.png.*|\.jepg.*|\.swf.*|\.bmp.*|\.ico.*#');
+define('BINARY_REG', '#\.ttf.*|\.woff.*|\.gif.*|\.jpg.*|\.png.*|\.jepg.*|\.swf.*|\.bmp.*|\.ico.*#');
 
 /**
  * handler static files
