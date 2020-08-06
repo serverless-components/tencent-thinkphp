@@ -2,14 +2,13 @@
 
 # 腾讯云 ThinkPHP Serverless Component
 
-[![npm](https://img.shields.io/npm/v/%40serverless%2Ftencent-thinkphp)](http://www.npmtrends.com/%40serverless%2Ftencent-thinkphp)
-[![NPM downloads](http://img.shields.io/npm/dm/%40serverless%2Ftencent-thinkphp.svg?style=flat-square)](http://www.npmtrends.com/%40serverless%2Ftencent-thinkphp)
-
 简体中文 | [English](https://github.com/serverless-components/tencent-thinkphp/blob/master/README.en.md)
 
 ## 简介
 
 腾讯云 [ThinkPHP](https://github.com/top-think/think) Serverless Component, 支持 Restful API 服务的部署。
+
+> 注意：支持 ThinkPHP >= 6.x
 
 ## 目录
 
@@ -49,26 +48,24 @@ $ touch serverless.yml
 
 ```yml
 # serverless.yml
+org: orgDemo
+app: appDemo
+stage: dev
+component: thinkphp
+name: thinkphpDemo
 
-MyThinkPHP:
-  component: '@serverless/tencent-thinkphp'
-  inputs:
-    region: ap-guangzhou
-    functionName: thinkphp-function
-    code: ./
-    functionConf:
-      timeout: 10
-      memorySize: 128
-      environment:
-        variables:
-          TEST: abc
-      vpcConfig:
-        subnetId: ''
-        vpcId: ''
-    apigatewayConf:
-      protocols:
-        - https
-      environment: release
+inputs:
+  src:
+    src: ./
+    exclude:
+      - .env
+  region: ap-guangzhou
+  runtime: Php7
+  apigatewayConf:
+    protocols:
+      - http
+      - https
+    environment: release
 ```
 
 - [更多配置](https://github.com/serverless-components/tencent-thinkphp/tree/master/docs/configure.md)
@@ -82,65 +79,15 @@ MyThinkPHP:
 通过 `sls` 命令进行部署，并可以添加 `--debug` 参数查看部署过程中的信息
 
 ```bash
-$ sls --debug
-
-  DEBUG ─ Resolving the template's static variables.
-  DEBUG ─ Collecting components from the template.
-  DEBUG ─ Downloading any NPM components found in the template.
-  DEBUG ─ Analyzing the template's components dependencies.
-  DEBUG ─ Creating the template's components graph.
-  DEBUG ─ Syncing template state.
-  DEBUG ─ Executing the template's components graph.
-  DEBUG ─ Compressing function thinkphp-function file to /Users/yugasun/Desktop/Develop/serverless/tencent-thinkphp/example/.serverless/thinkphp-function.zip.
-  DEBUG ─ Compressed function thinkphp-function file successful
-  DEBUG ─ Uploading service package to cos[sls-cloudfunction-ap-guangzhou-code]. sls-cloudfunction-default-thinkphp-function-1584413066.zip
-  DEBUG ─ Uploaded package successful /Users/yugasun/Desktop/Develop/serverless/tencent-thinkphp/example/.serverless/thinkphp-function.zip
-  DEBUG ─ Creating function thinkphp-function
-  DEBUG ─ Created function thinkphp-function successful
-  DEBUG ─ Setting tags for function thinkphp-function
-  DEBUG ─ Creating trigger for function thinkphp-function
-  DEBUG ─ Deployed function thinkphp-function successful
-  DEBUG ─ Starting API-Gateway deployment with name ap-guangzhou-apigateway in the ap-guangzhou region
-  DEBUG ─ Service with ID service-qndauhr4 created.
-  DEBUG ─ API with id api-6krpwfpo created.
-  DEBUG ─ Deploying service with id service-qndauhr4.
-  DEBUG ─ Deployment successful for the api named ap-guangzhou-apigateway in the ap-guangzhou region.
-
-  MyThinkPHP:
-    functionName:        thinkphp-function
-    functionOutputs:
-      ap-guangzhou:
-        Name:        thinkphp-function
-        Runtime:     Php7
-        Handler:     serverless-handler.handler
-        MemorySize:  128
-        Timeout:     10
-        Region:      ap-guangzhou
-        Namespace:   default
-        Description: This is a template function
-    region:              ap-guangzhou
-    apiGatewayServiceId: service-qndauhr4
-    url:                 https://service-qndauhr4-1251556596.gz.apigw.tencentcs.com/release/
-    cns:                 (empty array)
-
-  18s › MyThinkPHP › done
+$ serverless deploy --debug
 ```
-
-> 注意: `sls` 是 `serverless` 命令的简写。
 
 ### 4. 移除
 
 通过以下命令移除部署的 API 网关
 
 ```bash
-$ sls remove --debug
-
-  DEBUG ─ Flushing template state and removing all components.
-  DEBUG ─ Removed function thinkphp-function successful
-  DEBUG ─ Removing any previously deployed API. api-6krpwfpo
-  DEBUG ─ Removing any previously deployed service. service-qndauhr4
-
-  8s › MyThinkPHP › done
+$ serverless remove --debug
 ```
 
 ### 账号配置（可选）
