@@ -54,12 +54,21 @@ function handler($event, $context)
     $_GET = $event->queryString ?? [];
     $_GET = json_decode(json_encode($_GET), true);
 
+    $_SERVER['REQUEST_METHOD'] = $event->httpMethod;
+
     if(!empty($event->body)) {
+      $jsonobj = json_decode($event->body, true);
+      if (is_array($jsonobj) && !empty($jsonobj)) {
+        foreach ($jsonobj as $k => $v) {
+          $_POST[$k] = $v;
+        }
+      } else {
         $_POSTbody = explode("&", $event->body);
         foreach ($_POSTbody as $postvalues) {
-            $tmp=explode("=", $postvalues);
-            $_POST[$tmp[0]] = $tmp[1];
+          $tmp=explode("=", $postvalues);
+          $_POST[$tmp[0]] = $tmp[1];
         }
+      }
     }
 
     $app = new \think\App();
