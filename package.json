@@ -1,7 +1,7 @@
 {
   "name": "@serverless/thinkphp",
   "description": "Tencent Cloud Thinkphp Serverless Component",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "src/serverless.js",
   "publishConfig": {
     "access": "public"
