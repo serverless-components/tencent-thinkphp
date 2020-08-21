@@ -11,12 +11,13 @@ testProjects/*/package-lock.json
 testProjects/*/yarn.lock
 .serverlessUnzipped
 node_modules
-.vscode
+.vscode/
 .eslintcache
 dist
 .idea
 build/
-.env
+.env*
 env.js
 package-lock.json
+test
 yarn.lock
