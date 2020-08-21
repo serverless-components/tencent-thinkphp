@@ -56,7 +56,7 @@ function handler($event, $context)
 
     $_SERVER['REQUEST_METHOD'] = $event->httpMethod;
 	
-	$_POST = array();
+    $_POST = array();
 	
     if(!empty($event->body)) {
       $jsonobj = json_decode($event->body, true);
