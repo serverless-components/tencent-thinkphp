@@ -2,8 +2,6 @@
 
 # 腾讯云 ThinkPHP Serverless Component
 
-简体中文 | [English](https://github.com/serverless-components/tencent-thinkphp/blob/master/README.en.md)
-
 ## 简介
 
 腾讯云 [ThinkPHP](https://github.com/top-think/think) Serverless Component, 支持 Restful API 服务的部署。
@@ -109,3 +107,9 @@ TENCENT_SECRET_KEY=123
 ### 更多组件
 
 可以在 [Serverless Components](https://github.com/serverless/components) repo 中查询更多组件的信息。
+
+## License
+
+MIT License
+
+Copyright (c) 2020 Tencent Cloud, Inc.
