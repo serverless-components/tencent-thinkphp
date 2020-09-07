@@ -1,11 +1,12 @@
 name: thinkphp
-version: 0.0.5
-author: Tencent Cloud, Inc
-org: Tencent Cloud, Inc
+version: 0.0.6
+author: 'Tencent Cloud, Inc'
+org: 'Tencent Cloud, Inc'
 description: Deploy a serverless thinkphp application on Tencent SCF and API Gateway.
-keywords: tencent, serverless, thinkphp
-repo: https://github.com/serverless-components/tencent-thinkphp
-readme: https://github.com/serverless-components/tencent-thinkphp/tree/master/README.md
+keywords: 'tencent, serverless, thinkphp'
+repo: 'https://github.com/serverless-components/tencent-thinkphp'
+readme: >-
+  https://github.com/serverless-components/tencent-thinkphp/tree/master/README.md
 license: MIT
 main: ./src
 webDeployable: true
