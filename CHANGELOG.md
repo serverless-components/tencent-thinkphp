@@ -1,3 +1,11 @@
+## [0.0.6](https://github.com/serverless-components/tencent-thinkphp/compare/v0.0.5...v0.0.6) (2020-09-07)
+
+
+### Bug Fixes
+
+* update deploy flow for multi region ([58c470e](https://github.com/serverless-components/tencent-thinkphp/commit/58c470e55698f29ffdd5b78da82f3b15d155797a))
+* update deps ([8b0e8df](https://github.com/serverless-components/tencent-thinkphp/commit/8b0e8df917ac30236b4d3ff25e77a2099d19e1fe))
+
 ## [0.0.5](https://github.com/serverless-components/tencent-thinkphp/compare/v0.0.4...v0.0.5) (2020-09-02)
 
 
