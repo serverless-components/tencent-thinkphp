@@ -86,23 +86,26 @@ function handler($event, $context)
     $request->setMethod($event->httpMethod);
     $request->withHeader($headers);
 
+    // Check if it is running in multi-app
     $isMultiApp = isMultiApp($app);
-    
-    // get response
     if($isMultiApp) {
         $appName = getAppName($path);
         if($appName == '') {
-            include_once $app->getThinkPath() . 'helper.php';
+            // if app name not included in the request path, 
+            // find the default one defined in config/app.php
+            include_once $app->getThinkPath() . 'helper.php'; // include helper for env()
             $appConfig = require __DIR__ . '/config/app.php';
             $appName = isset($appConfig['default_app'])?$appConfig['default_app']:'index';
         } else {
             $request->setPathinfo(substr($path, strlen($appName)));
         }
         $response = $http->name($appName)->run($request);
+        
     } else {
         $response = $http->run($request);
     }
     
+    // get response
     $http->end($response);
 
     $body = $response->getContent();
