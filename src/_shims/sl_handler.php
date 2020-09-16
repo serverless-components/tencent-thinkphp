@@ -86,8 +86,23 @@ function handler($event, $context)
     $request->setMethod($event->httpMethod);
     $request->withHeader($headers);
 
+    $isMultiApp = isMultiApp($app);
+    
     // get response
-    $response = $http->run($request);
+	if($isMultiApp) {
+		$appName = getAppName($path);
+		if($appName == '') {
+			include_once $app->getThinkPath() . 'helper.php';
+			$appConfig = require __DIR__ . '/config/app.php';
+			$appName = isset($appConfig['default_app'])?$appConfig['default_app']:'index';
+		} else {
+			$request->setPathinfo(substr($path, strlen($appName)));
+		}
+		$response = $http->name($appName)->run($request);
+	} else {
+		$response = $http->run($request);
+	}
+    
     $http->end($response);
 
     $body = $response->getContent();
@@ -101,4 +116,25 @@ function handler($event, $context)
         ],
         'body' => $body
     ];
+}
+
+function isMultiApp() : bool
+{	
+	return class_exists('think\app\MultiApp');
+}
+
+function getAppName($path) 
+{
+	$strpos = strpos($path, '/');
+	if($strpos) {
+		$appname = substr($path, 0, $strpos);
+		// check if the folder exists
+		$appPath = __DIR__ . "/app/" . $appname;
+		if(is_dir($appPath)) {
+			return $appname;
+		}
+	}
+	
+	return '';
+	
 }
