@@ -10,8 +10,6 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-Route::get('think', function () {
-    return 'Welcome To Serverless ThinkPHP Application!';
-});
+Route::get('/', 'index/index');
 
 Route::get('hello/:name', 'index/hello');

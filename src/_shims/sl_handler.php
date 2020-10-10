@@ -89,22 +89,21 @@ function handler($event, $context)
     // Check if it is running in multi-app
     $isMultiApp = isMultiApp($app);
     if($isMultiApp) {
-        $appName = getAppName($path);
+        $appName = getAppName("/".$path);
         if($appName == '') {
-            // if app name not included in the request path, 
+            // if app name not included in the request path,
             // find the default one defined in config/app.php
             include_once $app->getThinkPath() . 'helper.php'; // include helper for env()
             $appConfig = require __DIR__ . '/config/app.php';
-            $appName = isset($appConfig['default_app'])?$appConfig['default_app']:'index';
+            $appName = isset($appConfig['default_app']) ? $appConfig['default_app'] : 'index';
         } else {
             $request->setPathinfo(substr($path, strlen($appName)));
         }
         $response = $http->name($appName)->run($request);
-        
     } else {
         $response = $http->run($request);
     }
-    
+
     // get response
     $http->end($response);
 
@@ -122,22 +121,22 @@ function handler($event, $context)
 }
 
 function isMultiApp() : bool
-{    
-    return class_exists('think\app\MultiApp');
+{
+  return is_dir(__DIR__ . "/app/" . 'controller') ? false : true;
 }
 
-function getAppName($path) 
+function getAppName($path)
 {
     $strpos = strpos($path, '/');
-    if($strpos) {
-        $appname = substr($path, 0, $strpos);
+    if($strpos || $strpos == 0) {
+        $appname = substr($path, $strpos + 1, strlen($path));
         // check if the folder exists
         $appPath = __DIR__ . "/app/" . $appname;
         if(is_dir($appPath)) {
             return $appname;
         }
     }
-    
+
     return '';
-    
+
 }
