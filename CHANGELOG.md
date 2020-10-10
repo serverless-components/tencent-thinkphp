@@ -1,3 +1,10 @@
+# [0.1.0](https://github.com/serverless-components/tencent-thinkphp/compare/v0.0.6...v0.1.0) (2020-10-10)
+
+
+### Features
+
+* support multi app, close [#5](https://github.com/serverless-components/tencent-thinkphp/issues/5) ([#12](https://github.com/serverless-components/tencent-thinkphp/issues/12)) ([4033d9a](https://github.com/serverless-components/tencent-thinkphp/commit/4033d9a8996515bcec614068ee5cd9b68335b239))
+
 ## [0.0.6](https://github.com/serverless-components/tencent-thinkphp/compare/v0.0.5...v0.0.6) (2020-09-07)
 
 
