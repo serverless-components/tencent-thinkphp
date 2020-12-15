@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/serverless-components/tencent-thinkphp/compare/v0.1.0...v0.1.1) (2020-12-15)
+
+
+### Bug Fixes
+
+* update deploy and remove flow ([#13](https://github.com/serverless-components/tencent-thinkphp/issues/13)) ([ba1a831](https://github.com/serverless-components/tencent-thinkphp/commit/ba1a831e7e619da067195133dd362b31b05e3711))
+
 # [0.1.0](https://github.com/serverless-components/tencent-thinkphp/compare/v0.0.6...v0.1.0) (2020-10-10)
 
 
