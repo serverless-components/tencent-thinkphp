@@ -1,15 +1,10 @@
-require('dotenv').config()
-const { generateId, getServerlessSdk } = require('./utils')
+const { generateId, getServerlessSdk } = require('./lib/utils')
 const axios = require('axios')
 
-// set enough timeout for deployment to finish
-jest.setTimeout(600000)
-
-// the yaml file we're testing against
 const instanceYaml = {
   org: 'orgDemo',
   app: 'appDemo',
-  component: 'thinkphp',
+  component: 'thinkphp@dev',
   name: `thinkphp-integration-tests-${generateId()}`,
   stage: 'dev',
   inputs: {
