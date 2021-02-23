@@ -46,7 +46,6 @@ $ touch serverless.yml
 
 ```yml
 # serverless.yml
-org: orgDemo
 app: appDemo
 stage: dev
 component: thinkphp

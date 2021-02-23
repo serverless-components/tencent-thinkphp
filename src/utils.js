@@ -5,7 +5,7 @@ const ensureObject = require('type/object/ensure')
 const ensureIterable = require('type/iterable/ensure')
 const ensureString = require('type/string/ensure')
 const download = require('download')
-const { TypeError } = require('tencent-component-toolkit/src/utils/error')
+const { ApiTypeError } = require('tencent-component-toolkit/lib/utils/error')
 const CONFIGS = require('./config')
 
 /*
@@ -57,13 +57,13 @@ const getDefaultServiceDescription = () => {
 
 const validateTraffic = (num) => {
   if (getType(num) !== 'Number') {
-    throw new TypeError(
+    throw new ApiTypeError(
       `PARAMETER_${CONFIGS.compName.toUpperCase()}_TRAFFIC`,
       'traffic must be a number'
     )
   }
   if (num < 0 || num > 1) {
-    throw new TypeError(
+    throw new ApiTypeError(
       `PARAMETER_${CONFIGS.compName.toUpperCase()}_TRAFFIC`,
       'traffic must be a number between 0 and 1'
     )
@@ -87,7 +87,7 @@ const getCodeZipPath = async (instance, inputs) => {
         filename: `${filename}.zip`
       })
     } catch (e) {
-      throw new TypeError(`DOWNLOAD_TEMPLATE`, 'Download default template failed.')
+      throw new ApiTypeError(`DOWNLOAD_TEMPLATE`, 'Download default template failed.')
     }
     zipPath = `${downloadPath}/${filename}.zip`
   } else {
@@ -179,7 +179,11 @@ const uploadCodeToCos = async (instance, appId, credentials, inputs, region) => 
 
 const prepareInputs = async (instance, credentials, inputs = {}) => {
   // 对function inputs进行标准化
-  const tempFunctionConf = inputs.functionConf ? inputs.functionConf : {}
+  const tempFunctionConf = inputs.functionConf
+    ? inputs.functionConf
+    : inputs.functionConfig
+    ? inputs.functionConfig
+    : {}
   const fromClientRemark = `tencent-${CONFIGS.compName}`
   const regionList = inputs.region
     ? typeof inputs.region == 'string'
@@ -190,16 +194,14 @@ const prepareInputs = async (instance, credentials, inputs = {}) => {
   // chenck state function name
   const stateFunctionName =
     instance.state[regionList[0]] && instance.state[regionList[0]].functionName
-  const functionConf = {
+  const functionConf = Object.assign(tempFunctionConf, {
     code: {
       src: inputs.src,
       bucket: inputs.srcOriginal && inputs.srcOriginal.bucket,
       object: inputs.srcOriginal && inputs.srcOriginal.object
     },
     name:
-      ensureString(inputs.functionName, { isOptional: true }) ||
-      stateFunctionName ||
-      getDefaultFunctionName(),
+      tempFunctionConf.name || inputs.functionName || stateFunctionName || getDefaultFunctionName(),
     region: regionList,
     role: ensureString(tempFunctionConf.role ? tempFunctionConf.role : inputs.role, {
       default: ''
@@ -230,14 +232,12 @@ const prepareInputs = async (instance, credentials, inputs = {}) => {
     publish: inputs.publish,
     traffic: inputs.traffic,
     lastVersion: instance.state.lastVersion,
-    eip: tempFunctionConf.eip === true,
-    l5Enable: tempFunctionConf.l5Enable === true,
-    timeout: tempFunctionConf.timeout ? tempFunctionConf.timeout : CONFIGS.timeout,
-    memorySize: tempFunctionConf.memorySize ? tempFunctionConf.memorySize : CONFIGS.memorySize,
-    tags: ensureObject(tempFunctionConf.tags ? tempFunctionConf.tags : inputs.tag, {
+    timeout: tempFunctionConf.timeout || CONFIGS.timeout,
+    memorySize: tempFunctionConf.memorySize || CONFIGS.memorySize,
+    tags: ensureObject(tempFunctionConf.tags ? tempFunctionConf.tags : inputs.tags, {
       default: null
     })
-  }
+  })
 
   // validate traffic
   if (inputs.traffic !== undefined) {
@@ -246,37 +246,63 @@ const prepareInputs = async (instance, credentials, inputs = {}) => {
   functionConf.needSetTraffic = inputs.traffic !== undefined && functionConf.lastVersion
 
   if (tempFunctionConf.environment) {
-    functionConf.environment = inputs.functionConf.environment
+    functionConf.environment = tempFunctionConf.environment
+    functionConf.environment.variables = {
+      ...(functionConf.environment.variables || {}),
+      ...CONFIGS.defaultEnvs
+    }
+  } else {
+    functionConf.environment = {
+      variables: CONFIGS.defaultEnvs
+    }
   }
-  if (tempFunctionConf.vpcConfig) {
-    functionConf.vpcConfig = inputs.functionConf.vpcConfig
+
+  if (tempFunctionConf.vpcConfig || tempFunctionConf.vpc) {
+    functionConf.vpcConfig = tempFunctionConf.vpcConfig || tempFunctionConf.vpc
   }
 
   // 对apigw inputs进行标准化
-  const tempApigwConf = inputs.apigatewayConf ? inputs.apigatewayConf : {}
-  const apigatewayConf = {
-    serviceId: inputs.serviceId,
+  const tempApigwConf = inputs.apigatewayConf
+    ? inputs.apigatewayConf
+    : inputs.apigwConfig
+    ? inputs.apigwConfig
+    : {}
+  const apigatewayConf = Object.assign(tempApigwConf, {
+    serviceId: tempApigwConf.serviceId || tempApigwConf.id || inputs.serviceId,
     region: regionList,
     isDisabled: tempApigwConf.isDisabled === true,
     fromClientRemark: fromClientRemark,
-    serviceName: inputs.serviceName || getDefaultServiceName(instance),
-    description: getDefaultServiceDescription(instance),
+    serviceName:
+      tempApigwConf.serviceName ||
+      tempApigwConf.name ||
+      inputs.serviceName ||
+      getDefaultServiceName(instance),
+    serviceDesc:
+      tempApigwConf.serviceDesc ||
+      tempApigwConf.description ||
+      getDefaultServiceDescription(instance),
     protocols: tempApigwConf.protocols || ['http'],
     environment: tempApigwConf.environment ? tempApigwConf.environment : 'release',
-    endpoints: [
+    customDomains: tempApigwConf.customDomains || []
+  })
+  if (!apigatewayConf.endpoints) {
+    apigatewayConf.endpoints = [
       {
-        path: '/',
-        enableCORS: tempApigwConf.enableCORS,
-        serviceTimeout: tempApigwConf.serviceTimeout,
+        path: tempApigwConf.path || '/',
+        enableCORS: tempApigwConf.enableCORS || tempApigwConf.cors,
+        serviceTimeout: tempApigwConf.serviceTimeout || tempApigwConf.timeout,
         method: 'ANY',
+        apiName: tempApigwConf.apiName || 'index',
+        isBase64Encoded: tempApigwConf.isBase64Encoded,
         function: {
           isIntegratedResponse: true,
           functionName: functionConf.name,
-          functionNamespace: functionConf.namespace
+          functionNamespace: functionConf.namespace,
+          functionQualifier:
+            (tempApigwConf.function && tempApigwConf.function.functionQualifier) || '$DEFAULT'
         }
       }
-    ],
-    customDomains: tempApigwConf.customDomains || []
+    ]
   }
   if (tempApigwConf.usagePlan) {
     apigatewayConf.endpoints[0].usagePlan = {

@@ -8,7 +8,8 @@ const CONFIGS = {
   timeout: 3,
   memorySize: 128,
   namespace: 'default',
-  description: 'Created by Serverless Component'
+  description: 'Created by Serverless Component',
+  defaultEnvs: {}
 }
 
 module.exports = CONFIGS

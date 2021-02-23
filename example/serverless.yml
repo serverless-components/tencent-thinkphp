@@ -9,10 +9,10 @@ inputs:
     src: ./
     exclude:
       - .env
-  # region: ap-guangzhou
-  # runtime: Php7
-  # apigatewayConf:
-  #   protocols:
-  #     - http
-  #     - https
-  #   environment: release
+  region: ap-guangzhou
+  runtime: Php7
+  apigatewayConf:
+    protocols:
+      - http
+      - https
+    environment: release
