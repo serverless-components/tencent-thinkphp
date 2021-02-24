@@ -43,34 +43,6 @@ function handlerStatic($path, $isBase64Encoded)
   ];
 }
 
-function initEnvironment($isBase64Encoded)
-{
-  $envName = '';
-  if (file_exists(__DIR__ . "/.env")) {
-    $envName = '.env';
-  } elseif (file_exists(__DIR__ . "/.env.production")) {
-    $envName = '.env.production';
-  } elseif (file_exists(__DIR__ . "/.env.local")) {
-    $envName = ".env.local";
-  }
-  $body = json_encode([
-    'error' => "Dotenv config file not exist"
-  ]);
-  if (!$envName) {
-    return [
-      'isBase64Encoded' => $isBase64Encoded,
-      'statusCode' => 500,
-      'headers' => [
-        'Content-Type' => 'application/json'
-      ],
-      'body' => $isBase64Encoded ? base64_encode($body) : $body
-    ];
-  }
-
-  $dotenv = Dotenv\Dotenv::createImmutable(__DIR__, $envName);
-  $dotenv->load();
-}
-
 function decodeFormData($rawData)
 {
   require_once __DIR__ . '/sl_arr.php';
@@ -159,8 +131,6 @@ function handler($event, $context)
     require __DIR__ . '/vendor/autoload.php';
 
     $isBase64Encoded = $event->isBase64Encoded;
-
-    initEnvironment($isBase64Encoded);
 
     // init path
     $path = '/' == $event->path ? '' : ltrim($event->path, '/');
