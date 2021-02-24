@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/serverless-components/tencent-thinkphp/compare/v0.1.1...v0.2.0) (2021-02-24)
+
+
+### Features
+
+* support post form data ([8d4edb3](https://github.com/serverless-components/tencent-thinkphp/commit/8d4edb3c053f21c88f6b124be8abb68c9205720b))
+
 ## [0.1.1](https://github.com/serverless-components/tencent-thinkphp/compare/v0.1.0...v0.1.1) (2020-12-15)
 
 
