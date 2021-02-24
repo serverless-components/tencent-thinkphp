@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/serverless-components/tencent-thinkphp/compare/v0.2.0...v0.2.1) (2021-02-24)
+
+
+### Bug Fixes
+
+* remove init environment logical ([572fd62](https://github.com/serverless-components/tencent-thinkphp/commit/572fd62946abef5d27f4005dfcc24d8464a04db7))
+
 # [0.2.0](https://github.com/serverless-components/tencent-thinkphp/compare/v0.1.1...v0.2.0) (2021-02-24)
 
 
