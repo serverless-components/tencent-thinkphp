@@ -1,3 +1,5 @@
+⚠️⚠️⚠️ 所有框架组件项目迁移到 [tencent-framework-components](https://github.com/serverless-components/tencent-framework-components).
+
 [![Tencent ThinkPHP Serverless Component](https://img.serverlesscloud.cn/2020310/1583829094880-thinkPHP_%E9%95%BF.png)](http://serverless.com)
 
 # 腾讯云 ThinkPHP Serverless Component
